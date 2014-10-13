@@ -1,0 +1,13 @@
+RewriteEngine On
+
+#RewriteCond %{HTTP_HOST} ^muzeumlega\.cz(.*)
+#RewriteRule (.*) http://www.muzeumlega.cz/$1 [R=301,L]
+
+RewriteRule ^store/(.*)                                    /data/$1                                                     [L,QSA]
+
+RewriteCond %{HTTP_HOST} ^digitisk.dontpanic.cz$ [OR]
+RewriteCond %{HTTP_HOST} ^digitisk.cz$ [NC]
+RewriteCond %{REQUEST_URI} !www/
+RewriteCond %{REQUEST_URI} !data/
+RewriteCond %{REQUEST_URI} !shared/
+RewriteRule (.*) /www/$1 [L]

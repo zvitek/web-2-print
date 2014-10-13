@@ -1,0 +1,39 @@
+parameters:
+	acl:
+		defaultRole:
+			merchant: 1
+			user: 2
+
+	mail:
+		parameters:
+			default:
+				subject: Email z DigiTisk-u
+				sender: no-reply@digitisk.dontapnic.cz
+			registration:
+				user:
+					subject: Registrační email pro DigiTisk
+					sender: %mail.parameters.default.sender%
+				merchant:
+					subject: Registrační email pro DigiTisk
+					sender: %mail.parameters.default.sender%
+			lostPassword:
+				user:
+					subject: Ztracené heslo DigiTisk
+					sender: %mail.parameters.default.sender%
+				merchant:
+					subject: Ztracené heslo DigiTisk
+					sender: %mail.parameters.default.sender%
+
+	user:
+		tokenLength: 35
+
+	path:
+		rootPath: /home/www/dontpanic.cz/www/digitisk.dontpanic.cz/
+		mailTemplates: %path.rootPath%app/classes/Mail/templates/
+
+	url:
+		rootUrl: digitisk.dontpanic.cz
+
+	users:
+		passwords:
+			salt: ThisIsSaltForAllUsedPasswordsOnProjectDigiPrint

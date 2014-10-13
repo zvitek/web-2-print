@@ -1,0 +1,10 @@
+{if count($data)}
+   <p>Registrační email. Pro aktivaci účtu použite prosím následující link:</p>
+
+
+    <p>
+        <a href="{plink //:User:User:activateAccount, token=>$data['token']}">
+            {plink //:User:User:activateAccount, token=>$data['token']}
+        </a>
+    </p>
+{/if}
