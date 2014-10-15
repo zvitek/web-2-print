@@ -48,7 +48,6 @@ class LoginControl extends \Nette\Application\UI\Control
 	{
 		$values = $form->getValues();
 
-		$this->userService->checkExpirationLostPassword($values['username']);
 		$this->user->login($values['username'], $values['password']);
 
 		if($this->user->isLoggedIn())

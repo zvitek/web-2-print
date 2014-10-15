@@ -55,4 +55,18 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         if(!is_null($merchantID))
             $this->merchantID = $merchantID;
     }
+
+	/**
+	 * Create template with default variables
+	 * @param null $class
+	 * @return \Nette\Application\UI\ITemplate
+	 */
+	public function createTemplate($class = NULL)
+	{
+		$template = parent::createTemplate($class);
+		$template->rootUrl = $this->config['url']['rootUrl'];
+		
+		$template->isLoggedIn = $this->user->isLoggedIn();
+		return $template;
+	}
 }

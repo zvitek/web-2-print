@@ -57,11 +57,17 @@ class LostPasswordMailGenerator extends \Nette\Application\UI\Control
 	 */
 	protected function createTemplate($class = NULL)
 	{
+		$templateName = $this->config['path']['mailTemplates'];
 		$template = parent::createTemplate($class);
 
 		$template->_presenter = parent::getPresenter(TRUE);
 
-		$template->setFile($this->config['path']['mailTemplates'].'LostPasswordMail.latte');
+		if(file_exists($templateName . '-' . ucfirst($this->type) . '.latte'))
+			$templateName .= 'LostPasswordMail-' . ucfirst($this->type) . '.latte';
+		else
+			$templateName .= 'LostPasswordMail.latte';
+
+		$template->setFile($templateName);
 		return $template;
 	}
 }

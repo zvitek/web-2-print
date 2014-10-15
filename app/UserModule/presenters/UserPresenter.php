@@ -23,6 +23,15 @@ class UserPresenter extends BasePresenter
 	{
 	}
 
+	public function actionRevokePassword($token = NULL)
+	{
+		$canRevoke = $this->userService->checkExpirationLostPassword($token);
+		if(!$canRevoke)
+			$this->redirect('User:login');
+		else
+			$this['revokePassword']->userID = $canRevoke;
+	}
+
 	public function renderLogout()
 	{
 		$this->user->logout(TRUE);
@@ -32,7 +41,6 @@ class UserPresenter extends BasePresenter
 
 	/**
 	 * Create Component Registration Control
-	 *
 	 * @return \App\User\control\RegistrationControl
 	 */
 	public function createComponentRegistration()
@@ -44,7 +52,6 @@ class UserPresenter extends BasePresenter
 
 	/**
 	 * Create Component Login Control
-	 *
 	 * @return \App\User\control\LoginControl
 	 */
 	public function createComponentLogin()
@@ -55,13 +62,22 @@ class UserPresenter extends BasePresenter
 
 	/**
 	 * Create Component Lost Password Control
-	 *
 	 * @return \App\User\control\LostPasswordControl
 	 */
 	public function createComponentLostPassword()
 	{
 		$component = new \App\User\control\LostPasswordControl($this->userService, $this->user, $this->config);
 		$component->addComponent(new \classes\Mail\ActivationMails\LostPasswordMailGenerator($this->config), 'mailSend');
+		return $component;
+	}
+
+	/**
+	 * Create Component Revoke Password Control
+	 * @return \App\User\control\RevokePasswordControl
+	 */
+	public function createComponentRevokePassword()
+	{
+		$component = new \App\User\control\RevokePasswordControl($this->userService, $this->user, $this->config);
 		return $component;
 	}
 }

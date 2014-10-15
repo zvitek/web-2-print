@@ -17,7 +17,6 @@ class PagePresenter extends BasePresenter
     protected function createComponentLoginForm()
     {
         $form = new Nette\Application\UI\Form();
-        $form['service'] = new Services_form('Servis', $this->calculatorService);
         $form->addCheckboxList('sdfd', 'ßfsd', array());
         $form->addText('test', 'sdfsdf');
         $form->addSubmit('teste', 'test');

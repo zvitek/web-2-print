@@ -24,6 +24,7 @@ class RouterFactory
 
 		$router[] = $calculatorRouter = new RouteList('User');
 		$calculatorRouter[] = new Route('zakaznik/aktivace-profilu/<token [a-zA-Z0-9]{35}>', array('presenter' => 'User', 'action' => 'activateAccount'));
+		$calculatorRouter[] = new Route('obnova-hesla/<token [a-zA-Z0-9]{35}>', array('presenter' => 'User', 'action' => 'revokePassword'));
 		$calculatorRouter[] = new Route('login', array('presenter' => 'User', 'action' => 'login'));
 		$calculatorRouter[] = new Route('logout', array('presenter' => 'User', 'action' => 'logout'));
 		$calculatorRouter[] = new Route('zakaznik/<presenter>/<action>', array('presenter' => 'Page', 'action' => 'default'));

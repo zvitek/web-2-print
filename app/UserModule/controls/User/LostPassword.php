@@ -56,19 +56,19 @@ class LostPasswordControl extends \Nette\Application\UI\Control
 		if($user)
 		{
 			$dataToSend = $this->userService->data_user(array($user['id']), array(), TRUE);
-			$dataToSend['new_password'] = $this->userService->user_setLostPassword($user['id']);
+			$dataToSend['token'] = $this->userService->user_setLostPassword($user['id']);
 
 			$this['mailSend']->type = 'user';
 			$this['mailSend']->data = $dataToSend;
 
 			if($this['mailSend']->sendLostPasswordEmail())
 			{
-				$this->getPresenter()->flashMessage('Nové heslo bylo vygenerováno a odesláno na Váš email', 'success');
+				$this->getPresenter()->flashMessage('Žádost o nové heslo byla zpracována. Na Váš email byl odeslán link pro změnu hesla.', 'success');
 				$this->getPresenter()->redirect(':User:Page:default');
 			}
 			else
 			{
-				$this->getPresenter()->flashMessage('Nové heslo bylo vygenerováno, no nezdařilo se nám odeslat ho na Váš email. Prosím, kontaktujte administrátora.', 'success');
+				$this->getPresenter()->flashMessage('Žádost o nové heslo byla zpracována, no nezdařilo se nám odeslat Vám link na upravení na Váš email. Prosím, kontaktujte administrátora.', 'success');
 				$this->getPresenter()->redirect('this');
 			}
 		}

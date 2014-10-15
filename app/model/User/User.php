@@ -254,16 +254,16 @@ class UserService extends \Nette\Object
 	/**
 	 * Najde záznam v tabulce ztracených hesel
 	 * Pracuje s tabulkami: users_lost_passwords
-	 * @param int $userID
+	 * @param int  $id
 	 * @param bool $onlyValid
 	 * @return bool|mixed|\Nette\Database\Table\IRow
 	 */
-	public function data_usersLostPasswords($userID, $onlyValid = FALSE)
+	public function data_usersLostPasswords($id, $onlyValid = FALSE)
 	{
-		if(!\Nette\Utils\Validators::isNumericInt($userID))
+		if(!\Nette\Utils\Validators::isNumericInt($id))
 			return FALSE;
 
-		$rows = $this->table_usersLostPasswords()->where(array('users_id' => $userID));
+		$rows = $this->table_usersLostPasswords()->where(array('id' => $id));
 
 		if($onlyValid)
 			return $rows->where(array('valid' => 1))->fetch();
@@ -273,8 +273,9 @@ class UserService extends \Nette\Object
 
 	/**
 	 * Nastaví stracené heslo a vygeneruje nové
-	 * Pracuje s tabulkami: users, users_lost_passwords
+	 * Pracuje s tabulkami: users, lost_passwords
 	 * @param int $userID
+	 * @return bool|string
 	 */
 	public function user_setLostPassword($userID)
 	{
@@ -284,14 +285,13 @@ class UserService extends \Nette\Object
 		$user = $this->data_user(array($userID), array(), TRUE);
 		if(!count($user)) return FALSE;
 
-		$newPassword = \Nette\Utils\Random::generate(7,'0-9a-zA-Z');
-		$hashedNewPassword = \Nette\Security\Passwords::hash($newPassword, array('salt' => $this->config['users']['passwords']['salt']));
+		$newToken = \Nette\Utils\Random::generate(35, '0-9a-zA-Z');
 
 		$lostPasswordData = array(
 			'users_id' => $user['id'],
-			'old_password' => $user['password'],
-			'new_password' => $hashedNewPassword,
-			'expire' => new \Nette\Utils\DateTime('NOW + 12 hours'),
+			'token' => $newToken,
+			'valid' => 1,
+			'expire' => new \Nette\Utils\DateTime('NOW + 24 hours'),
 			'created' => new \Nette\Utils\DateTime(),
 		);
 
@@ -302,63 +302,44 @@ class UserService extends \Nette\Object
 		}
 
 		if($this->i_userLostPassword($lostPasswordData))
-		{
-			if($this->user_switchPasswordsLost($userID, 'new'))
-				return $newPassword;
-			else
-				return FALSE;
-		}
+			return $newToken;
 		else
 			return FALSE;
 	}
 
 	/**
-	 * Prepne heslo na variantu ztraceného a zpátky na původní ( v případě expirace možnosti prihlášení na rebokační heslo)
-	 * @param int $userID
-	 * @param string $way
-	 * @return bool
-	 */
-	public function user_switchPasswordsLost($userID, $way = 'new')
-	{
-		if(!\Nette\Utils\Validators::isNumericInt($userID))
-			return FALSE;
-
-		$lostPasswordUser = $this->data_usersLostPasswords($userID, TRUE);
-
-		if(!$lostPasswordUser) return FALSE;
-
-		$updatePassword = $lostPasswordUser[$way . '_password'];
-
-		return $this->i_user(array('password' => $updatePassword), $userID);
-	}
-
-	/**
 	 * Ověří, zda neexpirovala doba na přihlášení pomocí dočasného hesla.
-	 * @param string $username
+	 * @param string $token
 	 * @return bool
 	 */
-	public function checkExpirationLostPassword($username)
+	public function checkExpirationLostPassword($token)
 	{
-		if(\Nette\Utils\Validators::isEmail($username))
+		$user = $this->userLostPassword_findByToken($token);
+		if($user)
 		{
-			$user = $this->user_findByEmail($username);
-			if($user)
+			$lostPassword = $this->data_usersLostPasswords($user['id'], TRUE);
+			if($lostPassword)
 			{
-				$lostPassword = $this->data_usersLostPasswords($user['id'], TRUE);
-				if($lostPassword)
+				$now = new \Nette\Utils\DateTime();
+				if($lostPassword['expire'] <= $now)
 				{
-					$now = new \Nette\Utils\DateTime();
-					if($lostPassword['expire'] <= $now)
-					{
-						$this->user_switchPasswordsLost($user['id'], 'old');
-						$this->user_expireAllLostPasswords($user['id']);
-					}
+					$this->user_expireAllLostPasswords($user['users_id']);
+					return FALSE;
 				}
+				return $user['users_id'];
 			}
 		}
-
 		return FALSE;
 	}
+
+	public function userLostPassword_findByToken($token)
+	{
+		if(!\Nette\Utils\Validators::isUnicode($token) || strlen((string)$token) !== $this->config['user']['tokenLength'])
+			return FALSE;
+
+		return $this->table_usersLostPasswords()->where(array('token' => $token))->fetch();
+	}
+
 
 	/**************************************************************************************************************z*v*/
 	/********** ACL ROLES FCN **********/
