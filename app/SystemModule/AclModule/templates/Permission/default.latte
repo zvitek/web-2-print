@@ -1,0 +1,39 @@
+{extends $adminLayout}
+{block content}
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+        <h2 n:block="title" class="dn">Nastavení přístupových oprávnění</h2>
+        <h3>Nastavení přístupových oprávnění</h3>
+
+        {control vp}
+        {if count($acl)}
+            <ul class="dataList fourRows rights">
+                <li class="itemListHeader topRadius">
+                    <span class="i1 fl ">Role</span>
+                    <span class="i2 fl">Resource</span>
+                    <span class="i3 fl">Privilege</span>
+                    <span class="i4 fl">Access</span>
+                </li>
+                {foreach $acl as $ac}
+                    <li>
+                        <span class="i1 fl ">{$ac->role}</span>
+                        <span class="i2 fl">{$ac->resource}</span>
+                        <span class="i3 fl">{if $ac->privilege == NULL}všechny{else}{$ac->privilege}{/if}</span>
+                        <span class="i4 fl">{if $ac->access}yes{else}no{/if}</span>
+
+                        <span onclick="delete_withAsk_ajax({link deletePermission!}, {$ac->id}); return false;" class="fr btn deleteBtn">Smazat</span>
+                        <a href="{plink Permission:detail, $ac->id}" class="fr btn editBtn">Upravit</a>
+                    </li>
+                {/foreach}
+            </ul>
+        {/if}
+
+        {control vp}
+        <div class="itemPanel">
+            <a href="{plink Permission:detail}" class="btn addBtn">Přidat nové oprávnění</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

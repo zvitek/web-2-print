@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{ifset #title}{include title|striptags} | {/ifset}Digitisk - zakaznik</title>
+    {block head}{/block}
+</head>
+
+<body>
+<script> document.documentElement.className += ' js' </script>
+<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+<p>
+    {if $isLoggedIn}
+        <a href="{plink :User:User:Logout}">Logout</a>
+        <a href="{plink :User:User:Profile}">Profile</a>
+    {else}
+        <a href="{plink :User:User:Login}">Login</a>
+    {/if}
+</p>
+{include content}
+{block scripts}{/block}
+</body>
+</html>

@@ -1,0 +1,22 @@
+{extends $adminLayout}
+{block content}
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+
+        <h3>Uživatelé v roli {$role}</h3>
+
+        {if $users}
+        <ul class="dataList threeRows usersInRoles">
+            <li class="itemListHeader topRadius"><span class="i1">Jméno</span><span>Email</span></li>
+                {foreach $users as $user}
+                    <li><span class="i1">{$user->name} {$user->surname}</span> <span class="i2">{$user->username}</span><a href="{plink Users:detail, $user->id}" class="fr btn">Upravit</a></li>
+                {/foreach}
+        </ul>
+        {else}
+            <p class="redFont mt25px">V této roli nebyli nalezeni žádní uživatelé</p>
+        {/if}
+    </div>
+    <div class="clear"></div>
+</div>

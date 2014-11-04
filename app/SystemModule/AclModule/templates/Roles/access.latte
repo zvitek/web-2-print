@@ -1,0 +1,29 @@
+{extends $adminLayout}
+{block content}
+
+{* {block title}Přístupy pro roli {$role}{/block} *}
+
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+
+        <h3>Autorizované přístupy pro roli "{$role}"</h3>
+
+        {if count($access)}
+            <ul class="dataList threeRows accesses">
+                <li class="topRadius"><span class="i1">Resources</span><span>Privileges</span><span class="fr">Access</span></li>
+                {foreach $access as $acces}
+                    <li>
+                        <span class="i1">{$acces['resource']}</span>
+                        <span class="i2">{$acces['privileg']}</span>
+                        <span class="fr">ano</span>
+                    </li>
+                {/foreach}
+            </ul>
+        {else}
+            <p class="redFont mt25px">Nebyly nalezeny žádné přístupy</p>
+        {/if}
+    </div>
+    <div class="clear"></div>
+</div>

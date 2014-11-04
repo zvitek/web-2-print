@@ -1,0 +1,54 @@
+parameters:
+
+	acl:
+		defaultRole:
+			merchant: 1
+			user: 2
+#		ACL SETTINGS
+		namespace: 'Nette.IS.Acl'
+		caching: true
+		cache_key: 'is_acl'
+		prog_mode: true
+
+	mail:
+		parameters:
+			default:
+				subject: Email z DigiTisk-u
+				sender: no-reply@digitisk.dontapnic.cz
+			registration:
+				user:
+					subject: Registrační email pro DigiTisk
+					sender: %mail.parameters.default.sender%
+				merchant:
+					subject: Registrační email pro DigiTisk
+					sender: %mail.parameters.default.sender%
+			lostPassword:
+				user:
+					subject: Ztracené heslo DigiTisk
+					sender: %mail.parameters.default.sender%
+				merchant:
+					subject: Ztracené heslo DigiTisk
+					sender: %mail.parameters.default.sender%
+
+
+	user:
+		passwordrevokeExpiration: '+ 24 hours' # NOW + XX HOURS
+		tokenLength: 35
+
+		redirectAfterLogin: ':User:Page:default'
+		redirectAfterRegistration: ':User:Page:default'
+
+	merchant:
+		redirectAfterLogin: ':Marchant:Page:default'
+		redirectAfterRegistration: ':Merchant:Page:default'
+
+	path:
+		rootPath: /home/www/dontpanic.cz/www/digitisk.dontpanic.cz/
+		mailTemplates: %path.rootPath%app/classes/Mail/templates/
+
+	url:
+		rootUrl: digitisk.dontpanic.cz
+
+	users:
+		passwords:
+			salt: ThisIsSaltForAllUsedPasswordsOnProjectDigiPrint

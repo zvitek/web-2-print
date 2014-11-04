@@ -1,0 +1,16 @@
+{**
+ * GUI for Acl
+ *
+ * @copyright  Copyright (c) 2012 Tomas Marcanik, www.TomasMarcanik.cz
+ * @package    GUI for Acl
+ *
+ * @param string   $basePath web base path
+ * @param string   $user users methods (if authenticated)
+ * @param array    $flashes  flash messages
+ *}
+{block content}
+<h1>{block #title}Delete user{/block}</h1>
+
+<p>Are you sure you want to delete the user "{$user_name}"?</p>
+
+{widget delete}

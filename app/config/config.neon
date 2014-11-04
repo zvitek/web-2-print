@@ -1,0 +1,42 @@
+parameters:
+
+php:
+	date.timezone: Europe/Prague
+
+nette:
+	database:
+		dsn: 'mysql:host=127.0.0.1;dbname=dontpanic_digitisk'
+		user: admin
+		password: 9cG43oEbDnSO
+
+	application:
+		errorPresenter: Error
+		mapping:
+			*: App\*Module\Presenters\*Presenter
+
+	session:
+		expiration: 14 days
+
+	latte:
+		macros:
+			- AngularFilter
+
+services:
+	database: @\Nette\Database\Context
+
+	calculatorService: App\Model\Calculator\CalculatorService
+
+	merchantService: App\Model\Merchant\MerchantService
+
+	customerService: App\Model\User\UserService
+
+	- App\Model\User\Authenticator
+	- App\RouterFactory
+
+	AclModel: \Model\Acl\AclModel
+	AclPrivilegesModel: \Model\Acl\PrivilegesModel
+	AclResourcesModel: \Model\Acl\ResourcesModel
+	AclRolesModel: \Model\Acl\RolesModel
+	AclUsersModel: \Model\Acl\UserServis
+
+	router: @App\RouterFactory::createRouter

@@ -1,0 +1,27 @@
+{if $paginator->pageCount > 1}
+<div class="pager paginator">
+    {if $paginator->isFirst()}
+    <li><span class="prev"></span></li>
+    {else}
+    <li><a class="prev enable" href="{link this, 'page' => $paginator->page - 1}{$kpzFilter}"></a></li>
+    {/if}
+
+    {foreach $steps as $step}
+    {if $step == $paginator->page}
+    <li><span>{$step}</span></li>
+    {else}
+    <li><a href="{link this, 'page' => $step}{$kpzFilter}">{$step}</a></li>
+    {/if}
+    {if $iterator->nextValue > $step + 1}
+    <li><span>…</span></li>
+    {/if}
+    {/foreach}
+
+    {if $paginator->isLast()}
+    <li><span class="next"></span></li>
+    {else}
+    <li><a class="next enable" href="{link this, 'page' => $paginator->page + 1}{$kpzFilter}"></a></li>
+    {/if}
+</div>
+<div class="clear"></div>
+{/if}
