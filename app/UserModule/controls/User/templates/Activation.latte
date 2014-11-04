@@ -1,0 +1,13 @@
+{block content}
+
+{if $noExist}
+    Pokoušíte se aktivovat neexistující účet. V přpípadě, že jste se registroval za posledních 24 hodin, obraťte se na administrátora.
+{elseif $alreadyActive}
+    Účet už byl aktivován.
+    <p><a href="{plink :User:User:Login}">Pokračovat na přihlašovací obrazovku</a></p>
+{elseif $activationError}
+    Během aktivace nastala chyba. Prosím kontaktujte administrátora.
+{else}
+    <p>Váš účet byl úspešně aktivován.</p>
+    <p><a href="{plink :User:User:Login}">Pokračovat na přihlašovací obrazovku</a></p>
+{/if}

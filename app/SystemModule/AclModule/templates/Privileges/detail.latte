@@ -1,0 +1,25 @@
+{extends $adminLayout}
+{block content}
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+        <h3>Přidat oprávnění</h3>
+		{form addEdit}
+		<div class="mt25px">
+			<table>
+				<tr><th>{label name /}</th><td>{input name}</td></tr>
+				<tr><th>{label key_name /}</th><td>{input key_name}</td></tr>
+				<tr><th>{label comment /}</th><td>{input comment class=>'m0'}</td></tr>
+			</table>
+		</div>
+
+		<div class="editationPanel">
+			<a href="{plink //Privileges:}">Zpět</a>
+			{input edit_back}
+			{input edit}
+		</div>
+		{/form}
+    </div>
+    <div class="clear"></div>
+</div>

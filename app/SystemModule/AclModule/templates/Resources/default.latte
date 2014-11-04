@@ -1,0 +1,24 @@
+{extends $adminLayout}
+{block content}
+
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+
+        <h3>Zdroje {if $canCreate}
+                    <a href="{plink Resources:detail}" class="controlButton subbmit fr btn addBtn ml0">Přidat nový zdroj</a>
+            {/if}</h3>
+
+        <h2 n:block="headline" class="dn">Nastavení přístupových zdrojů</h2>
+
+        <div class="contentSide">
+            <div class="tree">
+                {include './treeView.latte'}
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+

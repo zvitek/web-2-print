@@ -1,0 +1,44 @@
+{var $depth = 1}
+
+{block #treeView}
+<ul class="noTree dataList resources">
+    {foreach $parents as $child}
+    <li{if $iterator->isLast()} class="last"{/if}{if $iterator->isFirst()} class="first topRadius"{/if}>
+        <div class="nameControlHolder" >{$child->name} {if !empty($child->comment)}<i>{$child->comment}</i>{/if}{* style="margin-left: {($depth-1) * 40}px;" *}
+            {if $canDelete}<a class="controlButton delete btn deleteBtn fr" n:href="delete!, id=>$child->id">delete</a>{/if}
+            {if $canEdit}<a class="edit btn editBtn fr" href="{plink Resources:detail, $child->id}" title="Upravit zdroj">Upravit</a>{/if}
+        </div>
+    </li>
+    {if $nodes->hasChildNodes($child->id)}
+        {include #treeView, 'parents' => $nodes->getChildNodes($child->id), 'depth' => $depth+1}
+    {/if}
+    {/foreach}
+</ul>
+{/block}
+
+<script type="text/javascript">
+
+function switcDeleteControl(id, t)
+{
+    var allC = $('[data-delete]');;
+    var all = $('[data-delete-control]');
+    var cros = $('[data-delete="'+id+'"]');
+    var control = $('[data-delete-control="'+id+'"]');
+
+    if(parseInt(t)===1)
+    {
+        allC.show();
+        all.hide();
+        control.show();
+        cros.hide();
+    }
+    else
+    {
+        allC.show();
+        all.hide();
+        control.hide();
+        cros.show();
+    }
+}
+
+</script>

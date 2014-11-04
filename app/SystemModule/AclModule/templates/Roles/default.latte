@@ -1,0 +1,15 @@
+{extends $adminLayout}
+{block content}
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+
+        <h3>Správa rolí uživatelů<a href="{plink Roles:detail}" class="btn addBtn fr">Přidat</a></h3>
+        <div class="clear"></div>
+
+        {include './treeView.latte'}
+
+    </div>
+    <div class="clear"></div>
+</div>
