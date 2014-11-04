@@ -1,0 +1,28 @@
+{var $continue = false}
+{var $depth = 1}
+
+{block treeView}
+<ul class="dataList roles">
+    {foreach $parents as $child}
+    <li{if $iterator->isLast()} class="last"{/if} {if $iterator->isFirst()} class="first topRadius"{/if}>
+        <span class="fl">{$child->name} ({$child->members})</span>
+        <span class="fr">
+            <a href="{plink Roles:users, $child->id}">uživatelé</a>
+            <a href="{plink Roles:access, $child->id}">přístupy</a>
+            <a href="{plink Roles:add, $child->id}" class="btn addBtn">přidat</a>
+            <a href="{plink Roles:detail, $child->id}" class="btn editBtn">upravit</a>
+            <span onclick="delete_withAsk_ajax({link removeRole!}, {$child->id}); return false;" class="btn deleteBtn">Smazat</span>
+        </span>
+        {if !empty($child->comment)}{$child->comment}{/if}
+	</li>
+    {if $nodes->hasChildNodes($child->id)}
+        {if $iterator->isLast() OR $depth==1}
+            {var $continue = false}
+        {else}
+            {var $continue = true}
+        {/if}
+        {include #treeView, 'parents' => $nodes->getChildNodes($child->id), 'continue' => $continue, 'depth' => $depth+1}
+    {/if}
+    {/foreach}
+</ul>
+{/block}

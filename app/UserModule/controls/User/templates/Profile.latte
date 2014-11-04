@@ -1,0 +1,13 @@
+{block content}
+
+{control personalForm}
+{control passwordForm}
+
+{if in_array('user', $roles)}
+    {control transportForm}
+    {control billingForm}
+{/if}
+
+{if in_array('merchant', $roles)}
+    {control merchantForm}
+{/if}

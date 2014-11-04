@@ -1,0 +1,32 @@
+{extends $adminLayout}
+{block content}
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+
+        <h3>Log</h3>
+
+        {control vp}
+
+        {if count($logs)}
+            <ul class="dataList ">
+                <li class="itemListHeader topRadius"><span>Název</span><span></span><span></span></li>
+                {foreach $logs as $log}
+                    <li>
+                        {$log->users->name} {$log->users->surname}
+                        {$log->acl_resources->name}
+                        {$log->acl_privileges->name}
+                        {$log->created|dateTime}
+                    </li>
+                {/foreach}
+            </ul>
+        {else}
+            Nebyly nalezeny žádné záznamy...
+        {/if}
+
+        {control vp}
+
+    </div>
+    <div class="clear"></div>
+</div>

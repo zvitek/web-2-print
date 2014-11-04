@@ -1,0 +1,38 @@
+{extends $adminLayout}
+{block content}
+
+
+<div id="frame">
+	{include $aclSideBarMenu}
+	<div class="content fr">
+
+		<h2 n:block="headline" class="dn">Seznam autorizovaných přístupů</h2>
+
+
+			<h3>Výpis oprávnění pro uživatele {$users->name}</h3>
+			<br />
+			{if count($access)}
+			<table class="editation">
+				<tr>
+					<th width="200">Zdroje</th>
+					<th>Opravnění</th>
+					<th align="right" width="100">Přístup</th>
+				</tr>
+				{foreach $access as $acces}
+				<tr>
+					<td>{$acces['resource']}</td>
+					<td>{$acces['privileg']}</td>
+					<td align="right"><i class="fa fa-check"></i></td>
+				</tr>
+				{/foreach}
+			</table>
+			{else}
+			<div class="noData redFont">Nebyly nalezeny žádné záznamy...</div>
+			{/if}
+
+		<div class="editationPanel">
+			<a href="{plink Users:default}" class="controlButton fl ml0 cancel">Zpět</a>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

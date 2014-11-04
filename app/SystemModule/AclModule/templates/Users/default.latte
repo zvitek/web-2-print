@@ -1,0 +1,45 @@
+{extends $adminLayout}
+{block content}
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+
+        <h3>Uživatelé</h3>
+
+            {form search}
+                <table class="itemPanel">
+                    <tr>
+                        <td>{input name}{if $cancelFilter}<a href="{plink Users:default}" class="storno">zrušit</a>{/if}</td>
+                        <td>{input search}</td>
+                        <td>
+                            <a href="{plink Users:detail}" class="btn addBtn">Přidat uživatele</a>
+                        </td>
+                    </tr>
+                </table>
+            {/form}
+        <div class="clear"></div>
+
+
+		{* {control vp} *}
+
+        {if count($users)}
+            <ul class="dataList ">
+                <li class="itemListHeader topRadius"><span>Název</span><span></span><span></span></li>
+                {foreach $users as $id => $user}
+                    <li>
+                        {$user['name']}  #{$user['id']}
+                        {if $canDelete}<a href="{plink Users:delete, $id}" class="btn deleteBtn fr">odstranit</a>{/if}
+                        {if $canEdit}<a href="{plink Users:detail, $id}" class="btn editBtn fr">upravit</a>{/if}
+                        <a href="{plink Users:access, $id}" class="btn fr">oprávnění</a>
+                    </li>
+                {/foreach}
+            </ul>
+        {else}
+            Nebyly nalezeny žádné záznamy...
+        {/if}
+
+        {control vp}
+    </div>
+    <div class="clear"></div>
+</div>

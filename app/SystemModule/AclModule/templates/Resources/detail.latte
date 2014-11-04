@@ -1,0 +1,72 @@
+{extends $adminLayout}
+{block content}
+
+
+<div id="frame">
+    {include $aclSideBarMenu}
+    <div class="content fr">
+        <h2 n:block="headline" class="dn">{if $isEditResource}Upravit zdroj{else}Vytvořit zdroj{/if}</h2>
+
+        {form addEdit}
+            <div id="controlsButtons" class="editationPanel">
+                <a href="{plink //Resources:}" class="">Zpět na výpis zdrojů</a>{* controlButton cancel fl ml0 *}
+                {if $isEditResource}
+                    {input edit_back class=>'subbmit btn'}
+                    {input edit class=>'subbmit btn'}
+                {else}
+                    {input add_back class=>'subbmit btn'}
+                    {input add class=>'subbmit btn'}
+                {/if}
+
+                <div class="clear"></div>
+            </div>
+
+            <h3>Nastavení zdroje</h3>
+            <table class="mt25px editation wAuto sourceDetail">
+                <tr>
+                    <th>{label name class=>'cLabel w80px' /}</th>
+                    <td>{input name class=>'cInput s250'}</td>
+                </tr>
+                <tr>
+                    <th>{label key_name class=>'cLabel w80px' /}</th>
+                    <td>{input key_name class=>'cInput s250'}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        {if count($dataTree)}
+                            <div class="aclTree mt25px">
+                                {var $first = TRUE}
+                                {block #resourceTree}
+                                    <ul>
+                                        {if $first}
+                                            <li>
+                                                {$form['parent_id']->getControlPart(0)} Hlavní
+                                            </li>
+                                        {/if}
+                                        {foreach $dataTree as $item}
+                                            <li>
+												<div>
+                                                {$form['parent_id']->getControlPart($item['id'])}<label>{$item['name']}</label>
+												</div>
+                                                {if count($item['data'])}
+                                                    {include #resourceTree, dataTree => $item['data'], 'first' => FALSE}
+                                                {/if}
+                                            </li>
+                                        {/foreach}
+                                    </ul>
+                                {/block}
+                            </div>
+                        {/if}
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">{label comment, class=>'mt25px'/}</th>
+                </tr>
+                <tr>
+                    <td colspan="2">{input comment, class=>'w320px'}</td>
+                </tr>
+            </table>
+        {/form}
+    </div>
+    <div class="clear"></div>
+</div>

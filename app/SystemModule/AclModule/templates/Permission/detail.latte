@@ -1,0 +1,134 @@
+{extends $adminLayout}
+{block content}
+<div id="frame" class="noBgImg">
+    <div class="content w100 rules">
+<h2 n:block="title" class="dn">{if $isEditPermission}Upravit oprávnění{else}Přidat oprávnění{/if}</h2>
+
+{form addEdit}
+
+<div id="controlsButtons" class="editationPanel">
+    <a href="{plink //Permission:}">Zpět</a>
+    {if $isEditPermission}
+        {input edit_back}
+        {input edit}
+    {else}
+        {input add_back}
+        <!--{input add}-->
+    {/if}
+
+    <div class="clear"></div>
+</div>
+
+<table class="noBorder editation w75">
+    <tr>
+        <th class="tal"><h3>Role</h3></th>
+        <th class="tal"><h3>Sekce</h3></th>
+        <th class="tal"><h3>Práva</h3></th>
+        <th class="tal"><h3>Přístup</h3></th>
+    </tr>
+    <tr>
+        <td class="vat">
+        {if count($dataTreeRole)}
+            <div class="aclTree">
+            {var $first = TRUE}
+            {block #roleTree}
+                <ul>
+                {foreach $dataTreeRole as $item}
+                    <li>
+                        <div>
+                        {if $isEditPermission}
+                            {$form['role_id']->getControlPart($item['id'])} {$item['name']}
+                        {else}
+                            <label for="role_id_{$item['id']}"><input type="checkbox" name="role_id[]" id="role_id_{$item['id']}" value="{$item['id']}"> {$item['name']}</label>
+                        {/if}
+                        </div>
+                        {if count($item['data'])}
+                        {include #roleTree, dataTreeRole => $item['data'], 'first' => FALSE}
+                        {/if}
+                    </li>
+                {/foreach}
+                </ul>
+            {/block}
+            </div>
+        {/if}
+        </td>
+        <td class="vat">
+        {if count($dataTreeResources)}
+            <div class="aclTree">
+            {var $first = TRUE}
+            {block #resourceTree}
+                <ul>
+                {if $first}
+                    <li>
+                        <div>
+                        {if $isEditPermission}
+                            {$form['resource_id']->getControlPart(0)} Všechny zdroje
+                        {else}
+                            <label for="resource_id_0"><input type="checkbox" name="resource_id[]" id="resource_id_0" value="0"> Všechny zdroje</label>
+                        {/if}
+                        </div>
+                    </li>
+                {/if}
+
+                {foreach $dataTreeResources as $item}
+                    <li>
+                        <div>
+                        {if $isEditPermission}
+                            {$form['resource_id']->getControlPart($item['id'])} {$item['name']}
+                        {else}
+                            <label for="resource_id_{$item['id']}"><input type="checkbox" name="resource_id[]" id="resource_id_{$item['id']}" value="{$item['id']}"> {$item['name']}</label>
+                        {/if}
+                        </div>
+                        {if count($item['data'])}
+                        {include #resourceTree, dataTreeResources => $item['data'], 'first' => FALSE}
+                        {/if}
+                    </li>
+                {/foreach}
+                </ul>
+            {/block}
+            </div>
+        {/if}
+        </td>
+        <td class="vat">
+        {if count($dataTreePrivileges)}
+            <div class="aclTree">
+            {var $first = TRUE}
+            {block #privilegeTree}
+                <ul>
+                    <li>
+                        <div>
+                        {if $isEditPermission}
+                            {$form['privilege_id']->getControlPart(0)} Všechna oprávnění
+                        {else}
+                            <label for="privilege_id_0"><input type="checkbox" name="privilege_id[]" id="privilege_id_0" value="0"> Všechna oprávnění</label>
+                        {/if}
+                        </div>
+                    </li>
+                {foreach $dataTreePrivileges as $item}
+                    <li>
+                        <div>
+                        {if $isEditPermission}
+                            {$form['privilege_id']->getControlPart($item['id'])} {$item['name']}
+                        {else}
+                            <label for="privilege_id_{$item['id']}"><input type="checkbox" name="privilege_id[]" id="privilege_id_{$item['id']}" value="{$item['id']}"> {$item['name']}</label>
+                        {/if}
+                        </div>
+                    </li>
+                {/foreach}
+                </ul>
+            {/block}
+            </div>
+        {/if}
+        </td>
+        <td class="vat">
+            <ul>
+                <li>{input access}</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+
+{/form}
+    </div>
+</div>
